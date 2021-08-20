@@ -1,47 +1,48 @@
-var trex, trex_running, edges;
-var groundImage;
-var ground;
-
-function preload(){
-  trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
-  groundImage=loadImage("ground2.png")
-}
-
-function setup(){
-  createCanvas(600,200);
-  
-  // creating trex
-  trex = createSprite(50,160,20,50);
-  trex.addAnimation("running", trex_running);
-  edges = createEdgeSprites();
-  //adding scale and position to trex
-  trex.scale = 0.5;
-  trex.x = 50
-  
-  ground=createSprite(200,180,400,20)
-  ground.velocityX=-3
-  ground.x=ground.width/2
-  ground.addImage(groundImage)
-}
-
+var paddle;
+var ball;
+var wall1;
+var wall2;
+var wall3;
+var screenWidth;
+var screenHeight;
+var window1;
 
 function draw(){
-  //set background color 
-  background("white");
-  
-  //logging the y position of the trex
-  console.log(ground.x)
-  
-  //jump when space key is pressed
-  if(keyDown("space")){
-    trex.velocityY = -10;
+  background("black")
+  paddle.x=World.mouseX
+  if (keyDown("enter")){
+    ball.velocityX=5
+    ball.velocityY=5
   }
-  
-  trex.velocityY = trex.velocityY + 0.5;
-  //stop trex from falling down
-  trex.collide(ground)
-  if(ground.x<0){
-    ground.x=ground.width/2
-  }
-  drawSprites();
+
+    createEdgeSprites();
+    
+    ball.bounceOff(paddle)
+    ball.bounceOff(wall1);
+    ball.bounceOff(wall2);
+    ball.bounceOff(wall3);
+    if(ball.velocityY<12 && ball.velocityY>-12){
+    ball.velocityX *= 5.5;
+    ball.velocityY *= 5.5;
+    }
+
+
+    drawSprites();
 }
+
+
+
+
+function setup(){
+    createCanvas(1024,655)
+  ball=createSprite(512,327.5,25,25)
+  paddle=createSprite(512,655,100,15)
+  wall1=createSprite(0,655,12,1500)
+  wall2=createSprite(1024,200,12,1500)
+  wall3=createSprite(500,0,1500,12)
+  wall1.shapeColor=("black")
+  wall2.shapeColor=("black")
+  wall3.shapeColor=("black")
+
+}
+
